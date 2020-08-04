@@ -2,11 +2,79 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
 }
-
 .App {
   height: 100vh;
   width: 100vw;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  align-items: center;
+  align-content: center;
+  padding: 15px;
+  box-sizing: border-box;
+}
+.container div img {
+  width: 50px;
+  height: 50px;
+}
+.name {
+  padding: 0 10px;
+  transition: .2s;
+  font-weight: 800;
+}
+
+.hide {
+  opacity: 0;
+  height: 0px;
+}
+.item-container {
+  padding: 10px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+
+.show {
+  width: 100%;
+}
+.icon-name {
+  display: flex;
+  align-items: center;
+}
+.icon-name.minimize {
+  width: 50px;
+}
+
+.expand-button {
+  grid-column-end: -1;
+  grid-row: 1;
+  cursor: pointer;
+  background: white;
+  border: 0px;
+  transition: .2s;
+  height: 100%;
+  outline: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: 600;
+  color: #676879;
+}
+.expand-button:hover {
+  background: #DFF0FF;
+  transition: .2s;
+}
+
+.time-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
 }

@@ -1,59 +1,157 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import mondaySdk from "monday-sdk-js";
-import moment from "moment-timezone";
+import IndividualUser from './IndividualUser';
 const monday = mondaySdk();
-const apiKey = process.env.API2
+
 
 export default function App() {
   const [users, setUsers] = useState(null);
-  const [background, setBackground] = useState('#fff')
+  const [count, setCount] = useState(0);
+  const [background, setBackground] = useState("#fff");
+  const [dummydada] = useState([
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Philliphi dellshizdsdrz",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/Los_Angeles",
+    },
+    {
+      name: "Person WithReally LongNameWutNow",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    }, 
+    {
+      name: "Another Person WithReally LongName WhatNow?",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    },
+    ,    {
+      name: "Phil",
+      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
+      time_zone_identifier: "America/New_York",
+    }
+  ]);
 
-  const timeZone = (which, format = true) => {
-    const now = moment.utc();
+  const [expand, setExpand] = useState(false);
 
-    return format
-      ? moment().tz(which).format("LLLL")
-      : moment.tz.zone(which).utcOffset(now);
-  };
+
 
   useEffect(() => {
-    // monday.setToken(apiKey)
-    // monday.api(`query { users { id, name } }`).then((res) => {
-    //   console.log(res)
+    const interval = setInterval(() => {
+      setCount((count) => count + 1);
+    }, 10000);
 
-    // })
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    monday
+      .api(`query { users { id, name, time_zone_identifier,  photo_small} }`)
+      .then((res) => {
+        setUsers(res.data.users);
+      });
+
     monday.listen("settings", (res) => {
-      setBackground(res.data.background)
-      console.log(res.data.background)
+      setBackground(res.data.background);
     });
-
-    fetch("https://api.monday.com/v2", {
-      method: "POST",
-      body: JSON.stringify({
-        query: "{users { name, photo_small, time_zone_identifier}}",
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: apiKey,
-      },
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        console.log(response)
-        setUsers(response.data.users);
-      })
-      .catch((err) => console.log(err));
   }, []);
   return (
     <div className="App" style={{ background }}>
-      {users ?
-        users.map((user, key) => (
-          <div key={key}>
-            <img src={user.photo_small} alt={user.name + " avatar"} />
-            {user.name} {timeZone(user.time_zone_identifier)}
-          </div>
-        )) : <p>Hello</p>}
+      {users ? (<Fragment>
+      
+        <div className="container">
+          <button className="expand-button item-container" onClick={() => expand ? setExpand(false) : setExpand(true)}>{(expand) ? "Minimize": "Expand"}</button>
+        {dummydada.map((user, key) => {
+
+          return <IndividualUser user={user} key={key} expand={expand} index={key} />
+        }
+
+        )}
+      </div></Fragment>) : (
+        <p>Hello</p>
+      )}
     </div>
   );
 }
