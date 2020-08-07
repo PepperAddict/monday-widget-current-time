@@ -9,112 +9,8 @@ export default function App() {
   const [users, setUsers] = useState(null);
   const [count, setCount] = useState(0);
   const [background, setBackground] = useState("#fff");
-  const [dummydada] = useState([
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Philliphi dellshizdsdrz",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/Los_Angeles",
-    },
-    {
-      name: "Person WithReally LongNameWutNow",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    }, 
-    {
-      name: "Another Person WithReally LongName WhatNow?",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    },
-    ,    {
-      name: "Phil",
-      photo_small: "https://cdn1.monday.com/dapulse_default_photo.png",
-      time_zone_identifier: "America/New_York",
-    }
-  ]);
-
+  const [enable, setEnable] = useState(false)
   const [expand, setExpand] = useState(false);
-
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -124,12 +20,13 @@ export default function App() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [count]);
 
   useEffect(() => {
     monday
-      .api(`query { users { id, name, time_zone_identifier,  photo_small} }`)
+      .api(`query { users { id, name, time_zone_identifier, location, photo_small, country_code} }`)
       .then((res) => {
+        setEnable(true)
         setUsers(res.data.users);
       });
 
@@ -137,20 +34,24 @@ export default function App() {
       setBackground(res.data.background);
     });
   }, []);
+
   return (
     <div className="App" style={{ background }}>
-      {users ? (<Fragment>
+      <span className="color-white" onClick={() => setBackground('#fff')}></span>
+      {enable ? (<Fragment>
       
         <div className="container">
-          <button className="expand-button item-container" onClick={() => expand ? setExpand(false) : setExpand(true)}>{(expand) ? "Minimize": "Expand"}</button>
-        {dummydada.map((user, key) => {
+          <button className="expand-button item-container" onClick={() => expand ? setExpand(false) : setExpand(true)}>{(expand) ? "Collapse": "Maximize"}</button>
+        { users && users.map((user, key) => {
 
-          return <IndividualUser user={user} key={key} expand={expand} index={key} />
+          return <IndividualUser user={user} key={key} expand={expand} setExpand={setExpand} index={key} />
         }
 
         )}
       </div></Fragment>) : (
-        <p>Hello</p>
+        <div className="center-this">
+        <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
       )}
     </div>
   );
