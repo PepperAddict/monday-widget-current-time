@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 
 export default function IndividualUser(props) {
   const [expand, setExpand] = useState(props.expand);
-  const [user] = useState(props.user);
+
 
   const contentColorsforMonday = [
     "#00C875",
@@ -31,7 +31,7 @@ export default function IndividualUser(props) {
     "#A358DF",
   ];
   useEffect(() => {
-    if (props.expand == false) {
+    if (props.expand === false) {
       setExpand(false)
     }
   }, [props.expand])
@@ -57,20 +57,20 @@ export default function IndividualUser(props) {
         className={expand || props.expand ? "icon-name" : "icon-name minimize"}
         style={{ display: "flex" }}
       >
-        <img src={user.photo_small} alt={user.name + " avatar"} />
+        <img src={props.user.photo_small} alt={props.user.name + " avatar"} />
         <div className={expand || props.expand ? "name show" : "name hide"}>
-          {user.name}
+          {props.user.name}
         </div>
       </div>
 
       <div className="time-container expanded">
 
           <div style={{ display: "grid" }} className={expand || props.expand ? "show" : "hide"}>
-            <span style={{padding: "5px 0", margin: "5px 0px"}}>{user.location ? user.location: user.country_code}</span> 
-            <span style={{letterSpacing: "2px"}}>{timeZone(user.time_zone_identifier, false)}</span>
+            <span style={{padding: "5px 0", margin: "5px 0px"}}>{props.user.location ? props.user.location: props.user.country_code}</span> 
+            <span style={{letterSpacing: "2px"}}>{timeZone(props.user.time_zone_identifier, false)}</span>
           </div>
           <div className={expand || props.expand ? "hide" : "show"} style={{fontWeight: "600",
-    letterSpacing: "2px", fontSize: "1.3rem", width: "150px"}}>{timeZone(user.time_zone_identifier)}</div>
+    letterSpacing: "2px", fontSize: "100%", width: "150px"}}>{timeZone(props.user.time_zone_identifier)}</div>
 
       </div>
     </div>
